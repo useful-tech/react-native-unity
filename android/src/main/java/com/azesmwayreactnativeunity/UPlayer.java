@@ -97,8 +97,13 @@ public class UPlayer {
 
             return (FrameLayout) getFrameLayout.invoke(unityPlayer);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            return unityPlayer;
-        }
+            // If it is old UnityPlayer, use isInstance() and cast() to bypass incompatible type checks when compiling using newer versions of UnityPlayer
+            if (FrameLayout.class.isInstance(unityPlayer)) {
+                return FrameLayout.class.cast(unityPlayer);
+            } else {
+                return null;
+            }
+          }
     }
 
     public void setZ(float v) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
